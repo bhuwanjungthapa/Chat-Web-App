@@ -32,7 +32,6 @@ const Register = () => {
         }
       )
       .then((response) => {
-        console.log("Data saved successfully:", response.data);
         navigate("/login");
       })
       .catch((error) => {
