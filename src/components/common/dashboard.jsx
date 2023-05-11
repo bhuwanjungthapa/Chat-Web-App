@@ -75,7 +75,7 @@ const Dashboard = () => {
                     {otherUser.username === "Group Chat" ? (
                       <Link
                         to={{
-                          pathname: "/message",
+                          pathname: "/group",
                           search: `?sender=${user?.email}&recipient=${userList
                             .filter((u) => u.username !== "Group Chat")
                             .map((u) => u.email)
