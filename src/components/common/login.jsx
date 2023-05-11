@@ -46,13 +46,16 @@ const Login = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto">
+    <div className="flex items-center justify-center h-screen bg-gray-200">
       <form
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        className="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
         onSubmit={handleSubmit}
       >
         <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="email">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="email"
+          >
             Email
           </label>
           <input
@@ -66,7 +69,7 @@ const Login = () => {
         </div>
         <div className="mb-6">
           <label
-            className="block text-gray-700 font-bold mb-2"
+            className="block text-gray-700 text-sm font-bold mb-2"
             htmlFor="password"
           >
             Password
@@ -87,13 +90,13 @@ const Login = () => {
         )}
         <div className="flex items-center justify-between">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-700 hover:to-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
             type="submit"
           >
             Login
           </button>
           <button
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-gradient-to-r from-green-500 to-green-700 hover:from-green-700 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
             type="button"
             onClick={() => navigate("/register")}
           >
@@ -104,5 +107,4 @@ const Login = () => {
     </div>
   );
 };
-
 export default Login;

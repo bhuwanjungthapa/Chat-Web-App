@@ -92,91 +92,100 @@ const Message = ({ senderEmail, recipientEmail }) => {
   return (
     <>
       <Navbar username={user?.username} />
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`mb-4 ${msg.sender === user.email ? "text-right" : ""}`}
-          >
-            <p>
-              <strong>{msg.sender === user.email ? "You" : msg.sender}:</strong>
-            </p>
-            {editingMessageId === msg.id ? (
-              <div>
-                <input
-                  type="text"
-                  value={editedMessageText}
-                  onChange={(e) => setEditedMessageText(e.target.value)}
-                  className="border rounded p-2"
-                />
-                <button
-                  onClick={() =>
-                    updateMessage(msg.id, {
-                      ...msg,
-                      message: editedMessageText,
-                    })
-                  }
-                  className="bg-blue-500 text-white px-2 py-1 ml-2 rounded"
-                >
-                  Save
-                </button>
+      <div className="flex justify-center h-full py-6 bg-gray-100">
+        <div className="w-full max-w-2xl rounded-lg shadow-lg bg-white overflow-hidden">
+          <div className="p-6">
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                className={`mb-4 ${
+                  msg.sender === user.email ? "text-right" : ""
+                }`}
+              >
+                <div className="flex items-center space-x-4 mb-2">
+                  <div
+                    className={`font-medium text-lg ${
+                      msg.sender === user.email ? "ml-auto" : "text-blue-500"
+                    }`}
+                  >
+                    {msg.sender === user.email ? "You" : msg.sender}
+                  </div>
+                </div>
+                {editingMessageId === msg.id ? (
+                  <div>
+                    <input
+                      type="text"
+                      value={editedMessageText}
+                      onChange={(e) => setEditedMessageText(e.target.value)}
+                      className="border rounded p-2"
+                    />
+                    <button
+                      onClick={() =>
+                        updateMessage(msg.id, {
+                          ...msg,
+                          message: editedMessageText,
+                        })
+                      }
+                      className="bg-blue-500 text-white px-2 py-1 ml-2 rounded"
+                    >
+                      Save
+                    </button>
+                  </div>
+                ) : (
+                  <p>{msg.message}</p>
+                )}
+                {msg.sender === user.email && (
+                  <div>
+                    <button
+                      onClick={() => {
+                        setEditingMessageId(msg.id);
+                        setEditedMessageText(msg.message);
+                      }}
+                      className="bg-blue-500 text-white px-2 py-1 ml-2 rounded"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => deleteMessage(msg.id)}
+                      className="bg-red-500 text-white px-2 py-1 ml-2 rounded"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
               </div>
-            ) : (
-              <p>{msg.message}</p>
-            )}
-            {msg.sender === user.email && (
-              <div>
-                <button
-                  onClick={() => {
-                    setEditingMessageId(msg.id);
-                    setEditedMessageText(msg.message);
-                  }}
-                  className="bg-blue-500 text-white px-2 py-1 ml-2 rounded"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => deleteMessage(msg.id)}
-                  className="bg-red-500 text-white px-2 py-1 ml-2 rounded"
-                >
-                  Delete
-                </button>
-              </div>
-            )}
+            ))}
           </div>
-        ))}
-      </div>
 
-      <div className="max-w-md mx-auto">
-        <form
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-          onSubmit={handleSubmit}
-        >
-          <div className="mb-6">
-            <label
-              className="block text-gray-700 font-bold mb-2"
-              htmlFor="message"
-            >
-              Message to {recipient}
-            </label>
-            <textarea
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="message"
-              rows="4"
-              placeholder="Type your message here"
-              value={message}
-              onChange={handleChange}
-            />
+          <div className="border-t-2">
+            <form className="p-6" onSubmit={handleSubmit}>
+              <div className="mb-6">
+                <label
+                  className="block text-gray-700 font-bold mb-2"
+                  htmlFor="message"
+                >
+                  Message to {recipient}
+                </label>
+                <textarea
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="message"
+                  rows="4"
+                  placeholder="Type your message here"
+                  value={message}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+                  type="submit"
+                >
+                  Send
+                </button>
+              </div>
+            </form>
           </div>
-          <div className="flex items-center justify-between">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              type="submit"
-            >
-              Send
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
     </>
   );

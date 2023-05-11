@@ -41,50 +41,44 @@ const Dashboard = () => {
   return (
     <>
       <Navbar username={user?.username} onLogout={handleLogout} />
-      <div className="flex flex-col">
-        <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+      <div className="h-screen bg-gray-200">
+        <div className="flex flex-col justify-center items-center">
+          <div className="w-full md:w-3/4 lg:w-1/2 bg-white rounded-lg shadow-lg overflow-hidden">
+            <div className="border-b border-gray-200 bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-4 text-lg font-semibold">
+              Direct Messages
+            </div>
+            <div className="-mx-2 my-2 max-h-screen overflow-y-auto">
+              {userList.map(
+                (otherUser, index) =>
+                  otherUser.email !== user?.email && (
+                    <div
+                      key={index}
+                      className="hover:bg-gray-100 px-4 py-3 flex items-center cursor-pointer"
                     >
-                      Username
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Messages
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {userList.map((otherUser, index) => (
-                    <tr key={index}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {otherUser.username}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <div className="flex-shrink-0">
+                        <img
+                          className="h-12 w-12 rounded-full"
+                          src={`https://i.pravatar.cc/150?u=${otherUser.email}`}
+                          alt=""
+                        />
+                      </div>
+                      <div className="ml-3">
+                        <div className="font-medium text-gray-900">
+                          {otherUser.username}
+                        </div>
                         <Link
-                          onClick={() =>
-                            console.log(
-                              `/message?sender=${user?.email}&recipient=${otherUser.email}`
-                            )
-                          }
                           to={`/message?sender=${user?.email}&recipient=${otherUser.email}`}
-                          className="text-blue-600 hover:text-blue-800"
+                          className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
                         >
                           {otherUser.email}
                         </Link>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                        <div className="text-sm text-gray-500">
+                          {otherUser.email}
+                        </div>
+                      </div>
+                    </div>
+                  )
+              )}
             </div>
           </div>
         </div>
