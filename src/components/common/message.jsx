@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import queryString from "query-string";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 import Navbar from "./navbar";
 import { useContext } from "react";
 import UserContext from "./usercontext";
@@ -9,6 +11,7 @@ import axios from "axios";
 const Message = ({ senderEmail, recipientEmail }) => {
   const { user } = useContext(UserContext);
   const [messages, setMessages] = useState([]);
+  const navigate = useNavigate();
 
   const [message, setMessage] = useState("");
   const location = useLocation();
@@ -16,6 +19,11 @@ const Message = ({ senderEmail, recipientEmail }) => {
   const handleChange = (event) => {
     setMessage(event.target.value);
   };
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user, navigate]);
 
   const fetchMessages = useCallback(async () => {
     try {

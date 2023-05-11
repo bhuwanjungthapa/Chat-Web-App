@@ -11,6 +11,12 @@ const Dashboard = () => {
   const [userList, setUserList] = useState([]);
 
   useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user, navigate]);
+
+  useEffect(() => {
     const fetchUserList = async () => {
       try {
         const response = await fetch(
