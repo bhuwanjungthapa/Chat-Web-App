@@ -17,6 +17,13 @@ const Navbar = ({ username }) => {
         <>
           <span className="font-bold">Hello, {user?.username}</span>
           <button
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="button"
+            onClick={() => navigate("/dashboard")}
+          >
+            Dashboard
+          </button>
+          <button
             onClick={handleLogout}
             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
           >

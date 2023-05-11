@@ -16,9 +16,13 @@ const Message = ({ senderEmail, recipientEmail }) => {
   const [message, setMessage] = useState("");
   const location = useLocation();
   const { sender, recipient } = queryString.parse(location.search);
+  const [editingMessageId, setEditingMessageId] = useState(null);
+  const [editedMessageText, setEditedMessageText] = useState("");
+
   const handleChange = (event) => {
     setMessage(event.target.value);
   };
+
   useEffect(() => {
     if (!user) {
       navigate("/login");
@@ -31,11 +35,13 @@ const Message = ({ senderEmail, recipientEmail }) => {
         "https://nestnepal-frontend-chat-app-default-rtdb.firebaseio.com/messages.json"
       );
       const data = response.data;
-      const userMessages = Object.values(data).filter(
-        (msg) =>
-          (msg.sender === sender && msg.recipient === recipient) ||
-          (msg.sender === recipient && msg.recipient === sender)
-      );
+      const userMessages = Object.entries(data)
+        .map(([key, value]) => ({ id: key, ...value }))
+        .filter(
+          (msg) =>
+            (msg.sender === sender && msg.recipient === recipient) ||
+            (msg.sender === recipient && msg.recipient === sender)
+        );
       setMessages(userMessages);
     } catch (error) {
       console.error(error);
@@ -43,41 +49,46 @@ const Message = ({ senderEmail, recipientEmail }) => {
   }, [sender, recipient]);
 
   useEffect(() => {
-    const fetchMessageData = async () => {
-      await fetchMessages();
-    };
-    fetchMessageData();
-    const interval = setInterval(() => {
-      fetchMessageData();
-    }, 5000); // Fetches every 5 seconds
+    fetchMessages();
+    const interval = setInterval(fetchMessages, 5000); // Fetches every 5 seconds
     return () => clearInterval(interval); // Clears interval on component unmount
   }, [fetchMessages]);
 
-  const sendMessage = (sender, recipient, message) => {
-    axios
-      .post(
-        "https://nestnepal-frontend-chat-app-default-rtdb.firebaseio.com/messages.json",
-        {
-          sender: sender,
-          recipient: recipient,
-          message: message,
-        }
-      )
-      .then((response) => {
-        console.log("Message sent successfully:", response.data);
-        fetchMessages();
-      })
-      .catch((error) => {
-        console.error("Error sending message:", error);
-      });
+  const sendMessage = async (sender, recipient, message) => {
+    await axios.post(
+      "https://nestnepal-frontend-chat-app-default-rtdb.firebaseio.com/messages.json",
+      {
+        sender: sender,
+        recipient: recipient,
+        message: message,
+      }
+    );
+    fetchMessages();
+  };
+
+  const updateMessage = async (id, updatedMessage) => {
+    await axios.patch(
+      `https://nestnepal-frontend-chat-app-default-rtdb.firebaseio.com/messages/${id}.json`,
+      updatedMessage
+    );
+    fetchMessages();
+    setEditingMessageId(null);
+    setEditedMessageText("");
+  };
+
+  const deleteMessage = async (id) => {
+    await axios.delete(
+      `https://nestnepal-frontend-chat-app-default-rtdb.firebaseio.com/messages/${id}.json`
+    );
+    fetchMessages();
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(`Message from ${sender} to ${recipient}: ${message}`);
     sendMessage(sender, recipient, message);
     setMessage("");
   };
+
   return (
     <>
       <Navbar username={user?.username} />
@@ -90,7 +101,48 @@ const Message = ({ senderEmail, recipientEmail }) => {
             <p>
               <strong>{msg.sender === user.email ? "You" : msg.sender}:</strong>
             </p>
-            <p>{msg.message}</p>
+            {editingMessageId === msg.id ? (
+              <div>
+                <input
+                  type="text"
+                  value={editedMessageText}
+                  onChange={(e) => setEditedMessageText(e.target.value)}
+                  className="border rounded p-2"
+                />
+                <button
+                  onClick={() =>
+                    updateMessage(msg.id, {
+                      ...msg,
+                      message: editedMessageText,
+                    })
+                  }
+                  className="bg-blue-500 text-white px-2 py-1 ml-2 rounded"
+                >
+                  Save
+                </button>
+              </div>
+            ) : (
+              <p>{msg.message}</p>
+            )}
+            {msg.sender === user.email && (
+              <div>
+                <button
+                  onClick={() => {
+                    setEditingMessageId(msg.id);
+                    setEditedMessageText(msg.message);
+                  }}
+                  className="bg-blue-500 text-white px-2 py-1 ml-2 rounded"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => deleteMessage(msg.id)}
+                  className="bg-red-500 text-white px-2 py-1 ml-2 rounded"
+                >
+                  Delete
+                </button>
+              </div>
+            )}
           </div>
         ))}
       </div>
