@@ -33,7 +33,7 @@ const Login = () => {
         );
         if (user) {
           setUser(user);
-          console.log("Login successful:", user);
+
           navigate("/dashboard");
         } else {
           setError("Invalid email or password");
