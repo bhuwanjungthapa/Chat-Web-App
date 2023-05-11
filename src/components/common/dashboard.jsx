@@ -48,54 +48,56 @@ const Dashboard = () => {
               Direct Messages
             </div>
             <div className="-mx-2 my-2 max-h-screen overflow-y-auto">
-              {userList.map((otherUser, index) => (
-                <div
-                  key={index}
-                  className="hover:bg-gray-100 px-4 py-3 flex items-center cursor-pointer"
-                >
-                  <div className="flex-shrink-0">
-                    {otherUser.username === "Group Chat" ? (
-                      <img
-                        className="h-12 w-12 rounded-full"
-                        src="https://via.placeholder.com/150"
-                        alt=""
-                      />
-                    ) : (
-                      <img
-                        className="h-12 w-12 rounded-full"
-                        src={`https://i.pravatar.cc/150?u=${otherUser.email}`}
-                        alt=""
-                      />
-                    )}
-                  </div>
-                  <div className="ml-3">
-                    <div className="font-medium text-gray-900">
-                      {otherUser.username}
+              {userList
+                .filter((otherUser) => otherUser.email !== user?.email)
+                .map((otherUser, index) => (
+                  <div
+                    key={index}
+                    className="hover:bg-gray-100 px-4 py-3 flex items-center cursor-pointer"
+                  >
+                    <div className="flex-shrink-0">
+                      {otherUser.username === "Group Chat" ? (
+                        <img
+                          className="h-12 w-12 rounded-full"
+                          src="https://via.placeholder.com/150"
+                          alt=""
+                        />
+                      ) : (
+                        <img
+                          className="h-12 w-12 rounded-full"
+                          src={`https://i.pravatar.cc/150?u=${otherUser.email}`}
+                          alt=""
+                        />
+                      )}
                     </div>
-                    {otherUser.username === "Group Chat" ? (
-                      <Link
-                        to={{
-                          pathname: "/group",
-                          search: `?sender=${user?.email}&recipient=${userList
-                            .filter((u) => u.username !== "Group Chat")
-                            .map((u) => u.email)
-                            .join(",")}`,
-                        }}
-                        className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
-                      >
-                        Group Chat
-                      </Link>
-                    ) : (
-                      <Link
-                        to={`/message?sender=${user?.email}&recipient=${otherUser.email}`}
-                        className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
-                      >
-                        {otherUser.email}
-                      </Link>
-                    )}
+                    <div className="ml-3">
+                      <div className="font-medium text-gray-900">
+                        {otherUser.username}
+                      </div>
+                      {otherUser.username === "Group Chat" ? (
+                        <Link
+                          to={{
+                            pathname: "/group",
+                            search: `?sender=${user?.email}&recipient=${userList
+                              .filter((u) => u.username !== "Group Chat")
+                              .map((u) => u.email)
+                              .join(",")}`,
+                          }}
+                          className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                        >
+                          Group Chat
+                        </Link>
+                      ) : (
+                        <Link
+                          to={`/message?sender=${user?.email}&recipient=${otherUser.email}`}
+                          className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                        >
+                          {otherUser.email}
+                        </Link>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         </div>

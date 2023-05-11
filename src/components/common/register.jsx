@@ -59,6 +59,7 @@ const Register = () => {
             placeholder="Username"
             value={username}
             onChange={handleUsernameChange}
+            required
           />
         </div>
         <div className="mb-4">
@@ -75,6 +76,7 @@ const Register = () => {
             placeholder="Email"
             value={email}
             onChange={handleEmailChange}
+            required
           />
         </div>
         <div className="mb-6">
@@ -91,6 +93,7 @@ const Register = () => {
             placeholder="Password"
             value={password}
             onChange={handlePasswordChange}
+            required
           />
         </div>
         <div className="flex items-center justify-between">
