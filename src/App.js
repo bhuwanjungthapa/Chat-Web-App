@@ -1,24 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import AppRoutes from "./components/router/root";
+import UserContext from "./components/common/usercontext";
+import useLocalStorage from "./components/common/useLocalStorage";
 
 function App() {
+  const [user, setUser] = useLocalStorage("user", {});
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserContext.Provider value={{ user, setUser }}>
+      <AppRoutes />;
+    </UserContext.Provider>
   );
 }
 
