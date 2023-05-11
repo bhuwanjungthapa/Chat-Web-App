@@ -24,7 +24,7 @@ const Dashboard = () => {
         );
         const data = await response.json();
         const users = Object.values(data.users); // Access 'users' property and convert to array
-        setUserList(users);
+        setUserList([...users, { username: "Group Chat" }]); // Add group chat object to userList state
       } catch (error) {
         console.error(error);
       }
@@ -48,37 +48,54 @@ const Dashboard = () => {
               Direct Messages
             </div>
             <div className="-mx-2 my-2 max-h-screen overflow-y-auto">
-              {userList.map(
-                (otherUser, index) =>
-                  otherUser.email !== user?.email && (
-                    <div
-                      key={index}
-                      className="hover:bg-gray-100 px-4 py-3 flex items-center cursor-pointer"
-                    >
-                      <div className="flex-shrink-0">
-                        <img
-                          className="h-12 w-12 rounded-full"
-                          src={`https://i.pravatar.cc/150?u=${otherUser.email}`}
-                          alt=""
-                        />
-                      </div>
-                      <div className="ml-3">
-                        <div className="font-medium text-gray-900">
-                          {otherUser.username}
-                        </div>
-                        <Link
-                          to={`/message?sender=${user?.email}&recipient=${otherUser.email}`}
-                          className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
-                        >
-                          {otherUser.email}
-                        </Link>
-                        <div className="text-sm text-gray-500">
-                          {otherUser.email}
-                        </div>
-                      </div>
+              {userList.map((otherUser, index) => (
+                <div
+                  key={index}
+                  className="hover:bg-gray-100 px-4 py-3 flex items-center cursor-pointer"
+                >
+                  <div className="flex-shrink-0">
+                    {otherUser.username === "Group Chat" ? (
+                      <img
+                        className="h-12 w-12 rounded-full"
+                        src="https://via.placeholder.com/150"
+                        alt=""
+                      />
+                    ) : (
+                      <img
+                        className="h-12 w-12 rounded-full"
+                        src={`https://i.pravatar.cc/150?u=${otherUser.email}`}
+                        alt=""
+                      />
+                    )}
+                  </div>
+                  <div className="ml-3">
+                    <div className="font-medium text-gray-900">
+                      {otherUser.username}
                     </div>
-                  )
-              )}
+                    {otherUser.username === "Group Chat" ? (
+                      <Link
+                        to={{
+                          pathname: "/message",
+                          search: `?sender=${user?.email}&recipient=${userList
+                            .filter((u) => u.username !== "Group Chat")
+                            .map((u) => u.email)
+                            .join(",")}`,
+                        }}
+                        className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                      >
+                        Group Chat
+                      </Link>
+                    ) : (
+                      <Link
+                        to={`/message?sender=${user?.email}&recipient=${otherUser.email}`}
+                        className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                      >
+                        {otherUser.email}
+                      </Link>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
