@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import queryString from "query-string";
 import { useLocation } from "react-router-dom";
 import Navbar from "./navbar";
@@ -7,7 +7,7 @@ import UserContext from "./usercontext";
 import axios from "axios";
 
 const Message = ({ senderEmail, recipientEmail }) => {
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [messages, setMessages] = useState([]);
 
   const [message, setMessage] = useState("");
@@ -17,7 +17,7 @@ const Message = ({ senderEmail, recipientEmail }) => {
     setMessage(event.target.value);
   };
 
-  const fetchMessages = async () => {
+  const fetchMessages = useCallback(async () => {
     try {
       const response = await axios.get(
         "https://nestnepal-frontend-chat-app-default-rtdb.firebaseio.com/messages.json"
@@ -32,15 +32,18 @@ const Message = ({ senderEmail, recipientEmail }) => {
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [sender, recipient]);
 
   useEffect(() => {
-    fetchMessages();
+    const fetchMessageData = async () => {
+      await fetchMessages();
+    };
+    fetchMessageData();
     const interval = setInterval(() => {
-      fetchMessages();
+      fetchMessageData();
     }, 5000); // Fetches every 5 seconds
     return () => clearInterval(interval); // Clears interval on component unmount
-  }, [user]);
+  }, [fetchMessages]);
 
   const sendMessage = (sender, recipient, message) => {
     axios
