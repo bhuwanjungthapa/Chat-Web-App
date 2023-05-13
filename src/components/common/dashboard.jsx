@@ -31,6 +31,8 @@ const Dashboard = () => {
     };
 
     fetchUserList();
+    const interval = setInterval(fetchUserList, 3000); // Fetches every 3 seconds
+    return () => clearInterval(interval); // Clears interval on component unmount
   }, []);
 
   const handleLogout = () => {

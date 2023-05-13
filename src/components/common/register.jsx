@@ -96,20 +96,23 @@ const Register = () => {
             required
           />
         </div>
-        <div className="flex items-center justify-between">
+
+        <div className="flex flex-col items-center justify-center">
           <button
-            className="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-700 hover:to-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+            className="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-700 hover:to-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110 mb-4"
             type="submit"
-          >
-            Register
-          </button>
-          <button
-            className="bg-gradient-to-r from-green-500 to-green-700 hover:from-green-700 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
-            type="button"
-            onClick={() => navigate("/login")}
           >
             Login
           </button>
+          <div
+            className="text-sm text-blue-500 hover:text-blue-700 cursor-pointer transition-colors duration-500 ease-in-out"
+            onClick={() => navigate("/login")}
+          >
+            <p>
+              Already had a account?{" "}
+              <span className="underline">Click here to login</span>
+            </p>
+          </div>
         </div>
       </form>
     </div>
