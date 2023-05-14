@@ -84,7 +84,7 @@ const Dashboard = () => {
                   className="hover:bg-gray-100 px-4 py-3 flex items-center cursor-pointer"
                 >
                   <div className="flex-shrink-0">
-                    {otherUser.username === "Group Chart" ? (
+                    {otherUser.username === "Group Chat" ? (
                       <img
                         className="h-12 w-12 rounded-full"
                         src="https://via.placeholder.com/150"
@@ -100,12 +100,16 @@ const Dashboard = () => {
                   </div>
                   <div className="ml-3">
                     <div className="font-medium text-gray-900">
-                      <Link
-                        to={`/message?sender=${user?.email}&recipient=${otherUser.email}`}
-                        className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
-                      >
-                        {otherUser.username}
-                      </Link>
+                      {otherUser.username === "Group Chat" ? (
+                        <span>Group Chat</span>
+                      ) : (
+                        <Link
+                          to={`/message?sender=${user?.email}&recipient=${otherUser.email}`}
+                          className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                        >
+                          {otherUser.username}
+                        </Link>
+                      )}
                     </div>
                     {otherUser.username === "Group Chat" ? (
                       <Link
