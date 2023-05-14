@@ -8,9 +8,6 @@ const Navbar = ({ username, onLogout, onSearch, searchProp }) => {
   const navigate = useNavigate();
 
   const [search, setSearch] = useState(""); // Local state to manage the search input
-  useEffect(() => {
-    console.log("Navbar rendered, search state:", search);
-  });
 
   const handleInputChange = (event) => {
     const value = event.target.value;

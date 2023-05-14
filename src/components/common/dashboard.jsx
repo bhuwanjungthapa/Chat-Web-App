@@ -12,9 +12,7 @@ const Dashboard = () => {
   const [search, setSearch] = useState("");
 
   const handleSearchChange = (search) => {
-    console.log(`Received search input from Navbar: ${search}`);
     setSearch(search);
-    console.log(`Updated search state: ${search}`);
   };
 
   useEffect(() => {
@@ -31,7 +29,7 @@ const Dashboard = () => {
         );
         const data = await response.json();
         const users = Object.values(data.users); // Access 'users' property and convert to array
-        console.log("Received users from API:", users);
+
         setUserList([...users, { username: "Group Chat" }]); // Add group chat object to userList state
       } catch (error) {
         console.error(error);
@@ -62,7 +60,6 @@ const Dashboard = () => {
             <div className="border-b border-gray-200 bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-4 text-lg font-semibold">
               Direct Messages
             </div>
-
             <div className="-mx-2 my-2 max-h-screen overflow-y-auto">
               {[...userList]
                 .sort((a, b) => {
@@ -70,6 +67,15 @@ const Dashboard = () => {
                   if (b.username === "Group Chat") return 1;
                   return 0;
                 })
+                .filter((otherUser) => {
+                  if (!search) return true;
+                  return (
+                    (otherUser.email && otherUser.email.startsWith(search)) ||
+                    (otherUser.username &&
+                      otherUser.username.startsWith(search))
+                  );
+                })
+                .filter((otherUser) => otherUser.email !== user?.email)
                 .map((otherUser, index) => (
                   <div
                     key={index}
@@ -90,15 +96,9 @@ const Dashboard = () => {
                         />
                       )}
                     </div>
-
                     <div className="ml-3">
                       <div className="font-medium text-gray-900">
-                        <Link
-                          to={`/message?sender=${user?.email}&recipient=${otherUser.email}`}
-                          className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
-                        >
-                          {otherUser.username}
-                        </Link>
+                        {otherUser.username}
                       </div>
                       {otherUser.username === "Group Chat" ? (
                         <Link
