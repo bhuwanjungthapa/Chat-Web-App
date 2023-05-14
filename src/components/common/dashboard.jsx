@@ -56,76 +56,74 @@ const Dashboard = () => {
         onSearch={handleSearchChange}
         searchProp={search}
       />
-      <div className="h-screen bg-gray-200">
-        <div className="flex flex-col justify-center items-center">
-          <div className="w-full md:w-3/4 lg:w-1/2 bg-white rounded-lg shadow-lg overflow-hidden">
-            <div className="border-b border-gray-200 bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-4 text-lg font-semibold">
-              Direct Messages
-            </div>
-            <div className="-mx-2 my-2 max-h-screen overflow-y-auto">
-              {[...userList]
-                .sort((a, b) => {
-                  if (a.username === "Group Chat") return -1;
-                  if (b.username === "Group Chat") return 1;
-                  return a.username.localeCompare(b.username);
-                })
-                .filter((otherUser) => {
-                  if (!search) return true;
-                  return (
-                    otherUser.username &&
-                    otherUser.username
-                      .toLowerCase()
-                      .startsWith(search.toLowerCase())
-                  );
-                })
-                .filter((otherUser) => otherUser.email !== user?.email)
-                .map((otherUser, index) => (
-                  <div
-                    key={index}
-                    className="hover:bg-gray-100 px-4 py-3 flex items-center cursor-pointer"
-                  >
-                    <div className="flex-shrink-0">
-                      {otherUser.username === "Group Chart" ? (
-                        <img
-                          className="h-12 w-12 rounded-full"
-                          src="https://via.placeholder.com/150"
-                          alt=""
-                        />
-                      ) : (
-                        <img
-                          className="h-12 w-12 rounded-full"
-                          src={`https://i.pravatar.cc/150?u=${otherUser.email}`}
-                          alt=""
-                        />
-                      )}
-                    </div>
-                    <div className="ml-3">
-                      <div className="font-medium text-gray-900">
-                        <Link
-                          to={`/message?sender=${user?.email}&recipient=${otherUser.email}`}
-                          className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
-                        >
-                          {otherUser.username}
-                        </Link>
-                      </div>
-                      {otherUser.username === "Group Chat" ? (
-                        <Link
-                          to={{
-                            pathname: "/group",
-                            search: `?sender=${user?.email}&recipient=${userList
-                              .filter((u) => u.username !== "Group Chat")
-                              .map((u) => u.email)
-                              .join(",")}`,
-                          }}
-                          className="text-blue-600 hover:text-red-800 transition-colors duration-200"
-                        >
-                          Group Chat
-                        </Link>
-                      ) : null}
-                    </div>
+      <div className="flex flex-col justify-center items-center">
+        <div className="w-full md:w-3/4 lg:w-1/2 bg-white rounded-lg shadow-lg overflow-hidden">
+          <div className="border-b border-gray-200 bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-4 text-lg font-semibold">
+            Direct Messages
+          </div>
+          <div className="h-[900px] overflow-y-auto">
+            {[...userList]
+              .sort((a, b) => {
+                if (a.username === "Group Chat") return -1;
+                if (b.username === "Group Chat") return 1;
+                return a.username.localeCompare(b.username);
+              })
+              .filter((otherUser) => {
+                if (!search) return true;
+                return (
+                  otherUser.username &&
+                  otherUser.username
+                    .toLowerCase()
+                    .startsWith(search.toLowerCase())
+                );
+              })
+              .filter((otherUser) => otherUser.email !== user?.email)
+              .map((otherUser, index) => (
+                <div
+                  key={index}
+                  className="hover:bg-gray-100 px-4 py-3 flex items-center cursor-pointer"
+                >
+                  <div className="flex-shrink-0">
+                    {otherUser.username === "Group Chart" ? (
+                      <img
+                        className="h-12 w-12 rounded-full"
+                        src="https://via.placeholder.com/150"
+                        alt=""
+                      />
+                    ) : (
+                      <img
+                        className="h-12 w-12 rounded-full"
+                        src={`https://i.pravatar.cc/150?u=${otherUser.email}`}
+                        alt=""
+                      />
+                    )}
                   </div>
-                ))}
-            </div>
+                  <div className="ml-3">
+                    <div className="font-medium text-gray-900">
+                      <Link
+                        to={`/message?sender=${user?.email}&recipient=${otherUser.email}`}
+                        className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                      >
+                        {otherUser.username}
+                      </Link>
+                    </div>
+                    {otherUser.username === "Group Chat" ? (
+                      <Link
+                        to={{
+                          pathname: "/group",
+                          search: `?sender=${user?.email}&recipient=${userList
+                            .filter((u) => u.username !== "Group Chat")
+                            .map((u) => u.email)
+                            .join(",")}`,
+                        }}
+                        className="text-blue-600 hover:text-red-800 transition-colors duration-200"
+                      >
+                        Group Chat
+                      </Link>
+                    ) : null}
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
       </div>

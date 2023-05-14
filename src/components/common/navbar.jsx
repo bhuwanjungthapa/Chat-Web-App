@@ -24,19 +24,12 @@ const Navbar = ({ username, onLogout, onSearch, searchProp }) => {
   };
 
   return (
-    <nav className="p-6 bg-blue-500 text-white sticky top-0 z-50">
-      <div className="flex items-center">
-        <span className="font-bold">Hello, {user?.username}</span>
-        <button
-          className="ml-4 sm:hidden bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          type="button"
-          onClick={() => console.log("Mobile Menu Clicked")}
-        >
-          Menu
-        </button>
-      </div>
-      <div className="flex justify-between mt-4 sm:mt-0">
-        <div className="w-full sm:w-auto flex items-center">
+    <nav className="p-6 bg-blue-500 text-white">
+      <div className="flex flex-wrap items-center justify-between">
+        <div className="flex items-center">
+          <span className="font-bold">Hello, {user?.username}</span>
+        </div>
+        <div className="w-full sm:w-auto mt-4 sm:mt-0 flex items-center">
           <input
             type="text"
             onChange={handleInputChange}
@@ -50,9 +43,9 @@ const Navbar = ({ username, onLogout, onSearch, searchProp }) => {
             Logout
           </button>
         </div>
-        <div className="hidden sm:block">
+        <div className="w-full mt-4 sm:hidden">
           <button
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="button"
             onClick={() => navigate("/dashboard")}
           >
