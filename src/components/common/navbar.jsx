@@ -24,33 +24,35 @@ const Navbar = ({ username, onLogout, onSearch, searchProp }) => {
   };
 
   return (
-    <nav className="p-6 bg-blue-500 text-white flex justify-between">
-      {username && (
-        <div className="flex justify-between w-full">
+    <nav className="p-6 bg-blue-500 text-white">
+      <div className="flex flex-wrap items-center justify-between">
+        <div className="flex items-center">
           <span className="font-bold">Hello, {user?.username}</span>
+        </div>
+        <div className="w-full sm:w-auto mt-4 sm:mt-0 flex items-center">
+          <input
+            type="text"
+            onChange={handleInputChange}
+            placeholder="Search..."
+            className="px-3 py-2 text-black bg-white rounded"
+          />
           <button
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            onClick={handleLogoutClick}
+            className="ml-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Logout
+          </button>
+        </div>
+        <div className="w-full mt-4 sm:hidden">
+          <button
+            className="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="button"
             onClick={() => navigate("/dashboard")}
           >
             Dashboard
           </button>
-          <div className="flex space-x-4">
-            <input
-              type="text"
-              onChange={handleInputChange}
-              placeholder="Search..."
-              style={{ color: "black" }}
-            />
-            <button
-              onClick={handleLogoutClick}
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Logout
-            </button>
-          </div>
         </div>
-      )}
+      </div>
     </nav>
   );
 };
