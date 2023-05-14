@@ -62,17 +62,14 @@ const Dashboard = () => {
             <div className="border-b border-gray-200 bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-4 text-lg font-semibold">
               Direct Messages
             </div>
+
             <div className="-mx-2 my-2 max-h-screen overflow-y-auto">
-              {userList
-                .filter((otherUser) => {
-                  if (!search) return true;
-                  return (
-                    (otherUser.email && otherUser.email.startsWith(search)) ||
-                    (otherUser.username &&
-                      otherUser.username.startsWith(search))
-                  );
+              {[...userList]
+                .sort((a, b) => {
+                  if (a.username === "Group Chat") return -1;
+                  if (b.username === "Group Chat") return 1;
+                  return 0;
                 })
-                .filter((otherUser) => otherUser.email !== user?.email)
                 .map((otherUser, index) => (
                   <div
                     key={index}
@@ -93,9 +90,15 @@ const Dashboard = () => {
                         />
                       )}
                     </div>
+
                     <div className="ml-3">
                       <div className="font-medium text-gray-900">
-                        {otherUser.username}
+                        <Link
+                          to={`/message?sender=${user?.email}&recipient=${otherUser.email}`}
+                          className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                        >
+                          {otherUser.username}
+                        </Link>
                       </div>
                       {otherUser.username === "Group Chat" ? (
                         <Link
