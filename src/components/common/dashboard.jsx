@@ -9,6 +9,13 @@ const Dashboard = () => {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [userList, setUserList] = useState([]);
+  const [search, setSearch] = useState("");
+
+  const handleSearchChange = (search) => {
+    console.log(`Received search input from Navbar: ${search}`);
+    setSearch(search);
+    console.log(`Updated search state: ${search}`);
+  };
 
   useEffect(() => {
     if (!user) {
@@ -24,6 +31,7 @@ const Dashboard = () => {
         );
         const data = await response.json();
         const users = Object.values(data.users); // Access 'users' property and convert to array
+        console.log("Received users from API:", users);
         setUserList([...users, { username: "Group Chat" }]); // Add group chat object to userList state
       } catch (error) {
         console.error(error);
@@ -42,7 +50,12 @@ const Dashboard = () => {
 
   return (
     <>
-      <Navbar username={user?.username} onLogout={handleLogout} />
+      <Navbar
+        username={user?.username}
+        onLogout={handleLogout}
+        onSearch={handleSearchChange}
+        searchProp={search}
+      />
       <div className="h-screen bg-gray-200">
         <div className="flex flex-col justify-center items-center">
           <div className="w-full md:w-3/4 lg:w-1/2 bg-white rounded-lg shadow-lg overflow-hidden">
@@ -51,6 +64,14 @@ const Dashboard = () => {
             </div>
             <div className="-mx-2 my-2 max-h-screen overflow-y-auto">
               {userList
+                .filter((otherUser) => {
+                  if (!search) return true;
+                  return (
+                    (otherUser.email && otherUser.email.startsWith(search)) ||
+                    (otherUser.username &&
+                      otherUser.username.startsWith(search))
+                  );
+                })
                 .filter((otherUser) => otherUser.email !== user?.email)
                 .map((otherUser, index) => (
                   <div

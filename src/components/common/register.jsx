@@ -6,6 +6,8 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+
   const navigate = useNavigate();
 
   const handleUsernameChange = (event) => {
@@ -22,20 +24,43 @@ const Register = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setError(null);
+
+    // Check if email already exists
     axios
-      .post(
-        "https://nestnepal-frontend-chat-app-default-rtdb.firebaseio.com/users.json",
-        {
-          username,
-          email,
-          password,
-        }
+      .get(
+        `https://nestnepal-frontend-chat-app-default-rtdb.firebaseio.com/users.json?orderBy="email"&equalTo="${email}"`
       )
       .then((response) => {
-        navigate("/login");
+        const userData = response.data;
+        const doesEmailExist = !!Object.values(userData).find(
+          (user) => user.email === email
+        );
+
+        if (doesEmailExist) {
+          // Email already exists
+          setError("Email already exists");
+        } else {
+          // Email doesn't exist, continue registration
+          axios
+            .post(
+              "https://nestnepal-frontend-chat-app-default-rtdb.firebaseio.com/users.json",
+              {
+                username,
+                email,
+                password,
+              }
+            )
+            .then((response) => {
+              navigate("/login");
+            })
+            .catch((error) => {
+              console.error("Error saving data:", error);
+            });
+        }
       })
       .catch((error) => {
-        console.error("Error saving data:", error);
+        console.error("Error checking email:", error);
       });
   };
 
@@ -79,6 +104,11 @@ const Register = () => {
             required
           />
         </div>
+        {error && (
+          <div className="mb-4 text-red-500">
+            <p>{error}</p>
+          </div>
+        )}
         <div className="mb-6">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
@@ -102,7 +132,7 @@ const Register = () => {
             className="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-700 hover:to-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110 mb-4"
             type="submit"
           >
-            Login
+            Register
           </button>
           <div
             className="text-sm text-blue-500 hover:text-blue-700 cursor-pointer transition-colors duration-500 ease-in-out"
