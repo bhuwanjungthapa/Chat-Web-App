@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useContext } from "react";
 import UserContext from "./usercontext";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +7,10 @@ const Navbar = ({ username, onLogout, onSearch, searchProp }) => {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const [setSearch] = useState(""); // Local state to manage the search input
+  const [search, setSearch] = useState(""); // Local state to manage the search input
+  useEffect(() => {
+    console.log("Navbar rendered, search state:", search);
+  });
 
   const handleInputChange = (event) => {
     const value = event.target.value;

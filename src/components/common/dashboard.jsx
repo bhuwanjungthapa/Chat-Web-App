@@ -12,7 +12,9 @@ const Dashboard = () => {
   const [search, setSearch] = useState("");
 
   const handleSearchChange = (search) => {
+    console.log(`Received search input from Navbar: ${search}`);
     setSearch(search);
+    console.log(`Updated search state: ${search}`);
   };
 
   useEffect(() => {
@@ -29,7 +31,7 @@ const Dashboard = () => {
         );
         const data = await response.json();
         const users = Object.values(data.users); // Access 'users' property and convert to array
-
+        console.log("Received users from API:", users);
         setUserList([...users, { username: "Group Chat" }]); // Add group chat object to userList state
       } catch (error) {
         console.error(error);
@@ -65,14 +67,15 @@ const Dashboard = () => {
                 .sort((a, b) => {
                   if (a.username === "Group Chat") return -1;
                   if (b.username === "Group Chat") return 1;
-                  return 0;
+                  return a.username.localeCompare(b.username);
                 })
                 .filter((otherUser) => {
                   if (!search) return true;
                   return (
-                    (otherUser.email && otherUser.email.startsWith(search)) ||
-                    (otherUser.username &&
-                      otherUser.username.startsWith(search))
+                    otherUser.username &&
+                    otherUser.username
+                      .toLowerCase()
+                      .startsWith(search.toLowerCase())
                   );
                 })
                 .filter((otherUser) => otherUser.email !== user?.email)
@@ -82,7 +85,7 @@ const Dashboard = () => {
                     className="hover:bg-gray-100 px-4 py-3 flex items-center cursor-pointer"
                   >
                     <div className="flex-shrink-0">
-                      {otherUser.username === "Group Chat" ? (
+                      {otherUser.username === "Group Chart" ? (
                         <img
                           className="h-12 w-12 rounded-full"
                           src="https://via.placeholder.com/150"
@@ -98,7 +101,12 @@ const Dashboard = () => {
                     </div>
                     <div className="ml-3">
                       <div className="font-medium text-gray-900">
-                        {otherUser.username}
+                        <Link
+                          to={`/message?sender=${user?.email}&recipient=${otherUser.email}`}
+                          className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                        >
+                          {otherUser.username}
+                        </Link>
                       </div>
                       {otherUser.username === "Group Chat" ? (
                         <Link
@@ -109,18 +117,11 @@ const Dashboard = () => {
                               .map((u) => u.email)
                               .join(",")}`,
                           }}
-                          className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                          className="text-blue-600 hover:text-red-800 transition-colors duration-200"
                         >
                           Group Chat
                         </Link>
-                      ) : (
-                        <Link
-                          to={`/message?sender=${user?.email}&recipient=${otherUser.email}`}
-                          className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
-                        >
-                          {otherUser.email}
-                        </Link>
-                      )}
+                      ) : null}
                     </div>
                   </div>
                 ))}
