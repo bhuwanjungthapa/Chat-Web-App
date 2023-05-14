@@ -24,8 +24,8 @@ const Navbar = ({ username, onLogout, onSearch, searchProp }) => {
   };
 
   return (
-    <nav className="p-6 bg-blue-500 text-white">
-      <div className="flex flex-wrap items-center justify-between">
+    <nav className="p-6 bg-blue-500 text-white sticky top-0 z-10">
+      <div className="flex items-center justify-between">
         <div className="flex items-center">
           <span className="font-bold">Hello, {user?.username}</span>
         </div>
