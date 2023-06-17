@@ -30,7 +30,8 @@ const Navbar = ({ username, onLogout, onSearch, searchProp }) => {
         <div className="flex items-center">
           <span className="font-bold">Hello, {user?.username}</span>
         </div>
-        {location.pathname === "/message" && (
+        {(location.pathname === "/message" ||
+          location.pathname === "/group") && (
           <button
             className="mx-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="button"
