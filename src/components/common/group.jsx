@@ -27,7 +27,7 @@ const Group = () => {
   const fetchMessages = useCallback(async () => {
     try {
       const response = await axios.get(
-        "https://nestnepal-frontend-chat-app-default-rtdb.firebaseio.com/group.json"
+        "https://chat-app-787f3-default-rtdb.firebaseio.com/group.json"
       );
       const data = response.data;
       const groupMessages = Object.entries(data).map(([key, value]) => ({
@@ -48,7 +48,7 @@ const Group = () => {
 
   const sendMessage = async (sender, message) => {
     await axios.post(
-      "https://nestnepal-frontend-chat-app-default-rtdb.firebaseio.com/group.json",
+      "https://chat-app-787f3-default-rtdb.firebaseio.com/group.json",
       {
         sender: sender,
         message: message,

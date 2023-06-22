@@ -23,9 +23,7 @@ const Login = () => {
     event.preventDefault();
     setError(null);
     axios
-      .get(
-        "https://nestnepal-frontend-chat-app-default-rtdb.firebaseio.com/users.json"
-      )
+      .get("https://chat-app-787f3-default-rtdb.firebaseio.com/users.json")
       .then((response) => {
         const users = response.data;
         const user = Object.values(users).find(

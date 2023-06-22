@@ -29,7 +29,7 @@ const Register = () => {
     // Check if email already exists
     axios
       .get(
-        `https://nestnepal-frontend-chat-app-default-rtdb.firebaseio.com/users.json?orderBy="email"&equalTo="${email}"`
+        `https://chat-app-787f3-default-rtdb.firebaseio.com/users.json?orderBy="email"&equalTo="${email}"`
       )
       .then((response) => {
         const userData = response.data;
@@ -44,7 +44,7 @@ const Register = () => {
           // Email doesn't exist, continue registration
           axios
             .post(
-              "https://nestnepal-frontend-chat-app-default-rtdb.firebaseio.com/users.json",
+              "https://chat-app-787f3-default-rtdb.firebaseio.com/users.json",
               {
                 username,
                 email,

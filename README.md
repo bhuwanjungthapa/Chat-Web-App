@@ -1,6 +1,6 @@
 <body>
-  <h1>Nestnepal Frontend Chat App</h1>
-  <p>I created this project for a frontend developer intern position. It is a web app built using React, Firebase, Tailwind CSS, and React Hooks. This app allows users to register and login, and once logged in, they can view all registered users and send messages to any registered user.
+  <h1>Chat App</h1>
+  <p>It is a web app built using React, Firebase, Tailwind CSS, and React Hooks. This app allows users to register and login, and once logged in, they can view all registered users and send messages to any registered user.
 </p>
   <h2>Table of Contents</h2>
   <ul>
@@ -12,9 +12,9 @@
   </ul>
   <h2>Installation</h2>
   <p>To use this app, first clone or fetch the repository:</p>
-  <pre><code>git clone https://github.com/bhuwanjungthapa/nestnepal-frontend-chat-app.git</code></pre>
+  <pre><code>git clone https://github.com/bhuwanjungthapa/Chat-Web-App.git</code></pre>
   <p>Then, navigate to the project directory and install the dependencies:</p>
-  <pre><code>cd nestnepal-frontend-chat-app
+  <pre><code>cd chat-app
 npm install</code></pre>
   <h2>Usage</h2>
   <p>To start the app, run:</p>

@@ -32,7 +32,7 @@ const Message = ({ senderEmail, recipientEmail }) => {
   const fetchMessages = useCallback(async () => {
     try {
       const response = await axios.get(
-        "https://nestnepal-frontend-chat-app-default-rtdb.firebaseio.com/messages.json"
+        "https://chat-app-787f3-default-rtdb.firebaseio.com/messages.json"
       );
       const data = response.data;
       const userMessages = Object.entries(data)
@@ -56,7 +56,7 @@ const Message = ({ senderEmail, recipientEmail }) => {
 
   const sendMessage = async (sender, recipient, message) => {
     await axios.post(
-      "https://nestnepal-frontend-chat-app-default-rtdb.firebaseio.com/messages.json",
+      "https://chat-app-787f3-default-rtdb.firebaseio.com/messages.json",
       {
         sender: sender,
         recipient: recipient,
@@ -68,7 +68,7 @@ const Message = ({ senderEmail, recipientEmail }) => {
 
   const updateMessage = async (id, updatedMessage) => {
     await axios.patch(
-      `https://nestnepal-frontend-chat-app-default-rtdb.firebaseio.com/messages/${id}.json`,
+      `https://chat-app-787f3-default-rtdb.firebaseio.com/messages/${id}.json`,
       updatedMessage
     );
     fetchMessages();
@@ -78,7 +78,7 @@ const Message = ({ senderEmail, recipientEmail }) => {
 
   const deleteMessage = async (id) => {
     await axios.delete(
-      `https://nestnepal-frontend-chat-app-default-rtdb.firebaseio.com/messages/${id}.json`
+      `https://chat-app-787f3-default-rtdb.firebaseio.com/messages/${id}.json`
     );
     fetchMessages();
   };

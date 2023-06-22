@@ -27,7 +27,7 @@ const Dashboard = () => {
     const fetchUserList = async () => {
       try {
         const response = await fetch(
-          "https://nestnepal-frontend-chat-app-default-rtdb.firebaseio.com/.json"
+          "https://chat-app-787f3-default-rtdb.firebaseio.com/.json"
         );
         const data = await response.json();
         const users = Object.values(data.users); // Access 'users' property and convert to array
